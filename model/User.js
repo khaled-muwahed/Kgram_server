@@ -3,11 +3,16 @@ const mongoose = require ('mongoose');
 //const main = require('../index');
 
 const userSchema = new mongoose.Schema({
-name: {
+first_name: {
 type: String,
 required: true,
-min:5
+min:2
 
+},
+last_name: {
+    type: String,
+    required: true,
+    min:2 
 },
 email: {
     type: String,

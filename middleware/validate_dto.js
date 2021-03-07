@@ -1,4 +1,4 @@
-const ApiError = require("../errorHandling/errors_api");
+//const ApiError = require("../errorHandling/errors_api");
 
 
 function validateDto(schema) {
@@ -11,8 +11,8 @@ function validateDto(schema) {
             next();
 
         } catch (err) {
-            next(ApiError.badReq(err));
-            // res.status(400).json(err);
+           // next(ApiError.badReq(err));
+             res.status(400).json(err);
             //console.log('error detected' ,err);
         }
     };
