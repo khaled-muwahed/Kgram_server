@@ -11,10 +11,16 @@ const postRoute = require('./routes/posts');
 //const router = require('./routes/auth');
 dotenv.config();
 //connect to db
- mongoose.connect(process.env.DB_CONNECT,
-    { useNewUrlParser: true },
+
+ mongoose.connect(process.env.DB_CONNECT,{ useNewUrlParser: true },
+   { useUnifiedTopology: true } , 
     () => console.log('db connected !!!!!!!!!!!!!!!!!!!!')
 );
+ 
+ /*catch(err) {
+     console.log("connection error " , err);
+
+ }*/
 //Middleware
 app.use(express.json());
 //app.use(errorHandler);
