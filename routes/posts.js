@@ -5,15 +5,14 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
 destination: function(req , file , cb) {
-    cb(null,'./storage/')
+    cb(null,'./uploads/')
 },
 filename: function  (req , file, cb) {
-    cb (null, new Date().toISOString() + file.originalname);
-    
+    cb (null, +'-' + Date.now()+ file.originalname );  
 }
 });
 
-
+//const upload = multer({dest : 'uploads/'})
 
 
 
@@ -25,28 +24,30 @@ const imgModel = require('../model/postModel');
 const { Mongoose } = require('mongoose');
 
 var path = require('path');
-
+var fs = require('fs');
 
 
 router.post('/', upload.single('image'),authotise, (req, res , next) => {
+    console.log(req.file)
     const Img = new imgModel ({
        
         caption: req.body.caption,
         img: {
             
-            data: fs.readFileSync(path.join(__dirname + '/storage/' + req.file.filename)),
+            data: fs.readFileSync(path.join( 'uploads/' + req.file.filename)),
             contentType: 'image/png'
         }
         
     });
-    console.log(req.file)
-    
-
+  
     Img.save()
     .then(result => {
-        console.log(result);
+       // console.log(result);
         res.status(201).json({
-            message: "succsess"
+            message: "succsess",
+            caption: result.caption,
+          //  path: result.path
+
         })
     })
 
@@ -56,12 +57,12 @@ router.post('/', upload.single('image'),authotise, (req, res , next) => {
     });
 
 //const find = User.findOne({_id: req.user});
-    res.send(Img);
+//res.status().send(body)
 }
 
 );
 
-var fs = require('fs');
+
 //var path = require('path');
 /*
 

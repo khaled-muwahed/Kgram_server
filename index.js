@@ -28,7 +28,7 @@ app.use(express.json());
 app.use('/api/user', authRoute);
 
 //making storage folder publicly accessible 
-app.use('/Storage', express.static('Storage'))
+app.use('/uploads', express.static('uploads'))
 
 //check user auth
 app.use('/api/posts', postRoute);
