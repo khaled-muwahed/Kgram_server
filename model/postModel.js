@@ -1,3 +1,4 @@
+const { string } = require('joi');
 var mongoose = require('mongoose');
  
 var imageSchema = new mongoose.Schema({
@@ -11,6 +12,9 @@ var imageSchema = new mongoose.Schema({
     caption: {
         type: String,
 
+    },
+    path: {
+        type: String,
     },
 });
  

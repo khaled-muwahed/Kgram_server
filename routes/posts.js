@@ -8,15 +8,31 @@ destination: function(req , file , cb) {
     cb(null,'./uploads/')
 },
 filename: function  (req , file, cb) {
-    cb (null, +'-' + Date.now()+ file.originalname );  
+    cb (null, + Date.now()+ file.originalname );  
 }
 });
+
+const fileFilter = (req, file, cb ) => {
+    // rejecting a file
+    if(file.mimetype === 'image/jpeg' ||file.mimetype === 'image/png'  ){
+    // accepting a file
+    cb(null, true)
+    }
+    else{
+    cb(new Error ('you can upload png or jpeg only') , false);
+    }
+
+
+}
 
 //const upload = multer({dest : 'uploads/'})
 
 
 
-const upload = multer({storage : storage})
+const upload = multer({storage : storage
+, fileFilter: fileFilter,
+
+})
 
 const router = require ('express').Router();
 const authotise = require('./verifyAuth');
@@ -32,6 +48,7 @@ router.post('/', upload.single('image'),authotise, (req, res , next) => {
     const Img = new imgModel ({
        
         caption: req.body.caption,
+        path :req.file.path,
         img: {
             
             data: fs.readFileSync(path.join( 'uploads/' + req.file.filename)),
@@ -56,8 +73,6 @@ router.post('/', upload.single('image'),authotise, (req, res , next) => {
         console.log(err , "eroororoorroor")
     });
 
-//const find = User.findOne({_id: req.user});
-//res.status().send(body)
 }
 
 );
