@@ -8,7 +8,7 @@ destination: function(req , file , cb) {
     cb(null,'./uploads/')
 },
 filename: function  (req , file, cb) {
-    cb (null, + Date.now()+ file.originalname );  
+    cb (null, + Date.now()+ file.originalname.replace(" " , "-") );  
 }
 });
 
@@ -21,13 +21,9 @@ const fileFilter = (req, file, cb ) => {
     else{
     cb(new Error ('you can upload png or jpeg only') , false);
     }
-
-
 }
 
 //const upload = multer({dest : 'uploads/'})
-
-
 
 const upload = multer({storage : storage
 , fileFilter: fileFilter,
@@ -41,14 +37,16 @@ const { Mongoose } = require('mongoose');
 
 var path = require('path');
 var fs = require('fs');
+const { request } = require('http');
 
 
 router.post('/', upload.single('image'),authotise, (req, res , next) => {
     console.log(req.file)
     const Img = new imgModel ({
-       
-        caption: req.body.caption,
+        
         path :req.file.path,
+        caption: req.body.caption,
+       
         img: {
             
             data: fs.readFileSync(path.join( 'uploads/' + req.file.filename)),
@@ -63,6 +61,7 @@ router.post('/', upload.single('image'),authotise, (req, res , next) => {
         res.status(201).json({
             message: "succsess",
             caption: result.caption,
+           // path: req.file.path
           //  path: result.path
 
         })
@@ -77,29 +76,39 @@ router.post('/', upload.single('image'),authotise, (req, res , next) => {
 
 );
 
-
-//var path = require('path');
-/*
-
-router.post('/', upload.single('image'), (req, res, next) => {
- 
-    var obj = {
-        caption: req.body.caption,
-        img: {
-            
-            data: fs.readFileSync(path.join(__dirname + '/storage/' + req.file.filename)),
-            contentType: 'image/png'
+router.get("/feed",(req , res, next) =>{
+    imgModel.find()
+    .select("caption path")
+    .exec()
+    .then( 
+        result => {
+        const response = {
+            count: result.length,
+          
+            images: result.map(r => {
+                return {
+                    
+                    id: r._id,
+                    path: r.path,
+                    caption: r.caption,
+                    url: "http://localhost:3000/" + r.path
+                    
+                    
+             
+                }
+            })
+           
         }
-    }
-    imgModel.create(obj, (err, item) => {
-        if (err) {
-            console.log(err);
-        }
-        else {
-             item.save();
-            res.redirect('/');
-        }
+         console.log(result)
+        res.status(200).json(response);
+    })
+    
+      .catch((err) => {
+        console.log(err , "eroororoorroor")
+        res.status(500).json({
+            error: err
+        })
     });
-});*/
+})
 
 module.exports = router;
