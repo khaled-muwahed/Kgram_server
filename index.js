@@ -5,7 +5,7 @@ const authRoute = require('./routes/auth');
 
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const errorHandler = require('./errorHandling/server_error_handler');
+//const errorHandler = require('./errorHandling/server_error_handler');
 var bodyParser = require('body-parser');
 
 
