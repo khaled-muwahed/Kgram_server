@@ -21,6 +21,10 @@ dotenv.config();
 }
 );
 
+var cors = require('cors')
+
+app.use(cors())
+
 //Middleware
 app.use(express.json());
 //app.use(errorHandler);
@@ -33,10 +37,9 @@ app.use('/uploads', express.static('uploads'))
 //check user auth
 app.use('/api/posts', postRoute);
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+
  
 // Set EJS as templating engine 
 app.set("view engine", "ejs");
 
-app.listen(3000, () => console.log('server up and running'))
+app.listen(3333, () => console.log('server up and running'))
