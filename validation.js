@@ -10,7 +10,7 @@ const userValidation = data => {
     email: Joi.string().min(6).required().email().lowercase(),
     password: Joi.string().min(6).required()
   })
-  
+
   return  schema.validate(data);
 };
 

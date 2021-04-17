@@ -30,7 +30,7 @@ router.post('/new', async (req, res) => {
     const user = new User({
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        email: req.body.email,
+        email: req.body.email.toLowerCase(),
         password: hashedPassword,
     });
     try {
@@ -52,7 +52,7 @@ router.post('/login' , async (req , res) => {
 
         //checking the data base to see if email already exists
         
-        const user = await User.findOne({email: req.body.email});
+        const user = await User.findOne({email: req.body.email.toLowerCase()});
         if(!user) return res.status(400).send('email not found');
         // check password
         const validPass = await bcrypt.compare(req.body.password, user.password);
