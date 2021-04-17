@@ -42,6 +42,7 @@ const { request } = require('http');
 
 router.post('/', upload.single('image'),authotise, (req, res , next) => {
     console.log(req.file)
+    console.log("REQ recieved")
     const Img = new imgModel ({
         
         path :req.file.path,
@@ -91,10 +92,7 @@ router.get("/feed",(req , res, next) =>{
                     id: r._id,
                     path: r.path,
                     caption: r.caption,
-                    url: "http://localhost:3000/" + r.path
-                    
-                    
-             
+                    url: "http://localhost:3333/" + r.path
                 }
             })
            

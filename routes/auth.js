@@ -37,6 +37,7 @@ router.post('/new', async (req, res) => {
         
         const savedUser = await user.save();
         res.send({user: user._id});
+       
     }
     catch (err) {
         res.status(400).send(err);
@@ -59,7 +60,9 @@ router.post('/login' , async (req , res) => {
 
         // create token and assign it to user
         const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-        res.header('auth_token', token).send(token);
+        res.status(200);
+        res.header('auth_token', token).send({token});
+      
 
 });
 
