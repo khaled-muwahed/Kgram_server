@@ -19,7 +19,7 @@ router.post('/new', async (req, res) => {
 
     //checking the data base to see if email already exists
     const emailTaken = await User.findOne({email: req.body.email});
-    if(emailTaken) return res.status(400).send('the email used by another member');
+    if(emailTaken) return res.status(401).send('the email used by another member');
 
 
     //password Hashing
@@ -40,7 +40,7 @@ router.post('/new', async (req, res) => {
        
     }
     catch (err) {
-        res.status(400).send(err);
+        res.status(500).send(err);
     }
 
 });
