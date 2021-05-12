@@ -11,7 +11,6 @@ filename: function  (req , file, cb) {
     cb (null, + Date.now()+ file.originalname.replace(" " , "-") );  
 }
 });
-
 const fileFilter = (req, file, cb ) => {
     // rejecting a file
     if(file.mimetype === 'image/jpeg' ||file.mimetype === 'image/png'  ){
@@ -22,12 +21,10 @@ const fileFilter = (req, file, cb ) => {
     cb(new Error ('you can upload png or jpeg only') , false);
     }
 }
-
 //const upload = multer({dest : 'uploads/'})
 
 const upload = multer({storage : storage
 , fileFilter: fileFilter,
-
 })
 
 const router = require ('express').Router();
@@ -76,8 +73,7 @@ router.post('/', upload.single('image'),authotise, (req, res , next) => {
 }
 
 );
-
-router.get("/feed",(req , res, next) =>{
+router.get("/feed", (req , res, next) =>{
     imgModel.find()
     .select("caption path")
     .exec()
